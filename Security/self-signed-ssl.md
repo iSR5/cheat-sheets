@@ -58,6 +58,13 @@ X.509 Certificates exist in Base64 Formats **PEM (.pem, .crt, .ca-bundle)**, **P
 
 `openssl verify -CAfile ca.pem -verbose cert.pem`
 
+## Bundling certificates order (Chaining)
+
+0. Private Key (If it's needed for some applications)
+1. Certificate
+2. Intermediate
+3. Root
+
 ## Install the CA Cert as a trusted root CA
 
 ### On Debian & Derivatives
