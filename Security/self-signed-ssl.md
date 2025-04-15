@@ -33,7 +33,7 @@ openssl req -new -sha256 -subj "/CN=localhost" -key cert-key.pem -out cert.csr
 3. Generate a `extfile` with all the alternative names
 
 ```bash
-echo "subjectAltName=DNS:localhost,IP:127.0.01" >> extfile.cnf
+echo "subjectAltName=DNS:localhost,IP:127.0.0.1" >> extfile.cnf
 ```
 
 4. Generate Public Certificate (using our CA)
@@ -42,7 +42,7 @@ echo "subjectAltName=DNS:localhost,IP:127.0.01" >> extfile.cnf
 openssl x509 -req -sha256 -days 365 -in cert.csr -CA ca.pem -CAkey ca-key.pem -out cert.pem -extfile extfile.cnf -CAcreateserial
 ```
 
-## Certificate Formats
+## Certificate Formats Conversions
 
 X.509 Certificates exist in Base64 Formats **PEM (.pem, .crt, .ca-bundle)**, **PKCS#7 (.p7b, p7s)** and Binary Formats **DER (.der, .cer)**, **PKCS#12 (.pfx, p12)**.
 
@@ -56,13 +56,38 @@ X.509 Certificates exist in Base64 Formats **PEM (.pem, .crt, .ca-bundle)**, **P
 
 ## Verify Certificates
 
-`openssl verify -CAfile ca.pem -verbose cert.pem`
+```bash
+openssl verify -CAfile ca.pem -verbose cert.pem
+```
 
-## Bundling certificates order (Chaining)
+## Bundling Certificates (Chaining)
+
+Chain Order
 
 1. Certificate
 2. Intermediate
 3. Root
+
+Unix :
+
+```bash
+cat cert.pem ca-key.pem > cert-bundle.pem
+
+```
+
+Windows :
+
+```bash
+copy /A cert.pem+ca-key.pem cert-bundle.pem /A
+
+```
+
+Verify Bundle :
+
+```bash
+openssl verify cert-bundle.pem
+
+```
 
 ## Install the CA Cert as a trusted root CA
 
